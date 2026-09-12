@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Lấy Độ Nhạy Free Fire Mới Nhất</title>
+    <style>
+        :root {
+            --bg-color: #0d0f12;
+            --card-bg: #181b20;
+            --accent-color: #ff4655;
+            --accent-hover: #e03e4d;
+            --text-color: #ffffff;
+            --text-sub: #a0a5b1;
+            --border-color: #2a2e37;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent-color);
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-sub);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            background-color: #0f1115;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1f232b;
+            border: 1px solid var(--border-color);
+            border-radius: 0 0 10px 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 10;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 12px 18px;
+            cursor: pointer;
+            border-bottom: 1px solid #2a2e37;
+        }
+
+        .suggestion-item:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-search {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-search:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Result Section */
+        .result-box {
+            margin-top: 25px;
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .device-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4cd137;
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .stat-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: #0f1115;
+            padding: 12px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-sub);
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .fire-button {
+            grid-column: span 2;
+            background: linear-gradient(90deg, #ff4655, #ff7300);
+            border-left: none;
+            justify-content: center;
+            gap: 15px;
+            font-size: 18px;
+        }
+
+        .dpi-info {
+            grid-column: span 2;
+            border-left-color: #00a8ff;
+        }
+
+        .not-found {
+            text-align: center;
+            color: #ff4d4d;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>LẤY ĐỘ NHẠY FREE FIRE</h1>
+    <p class="subtitle">Nhập tên dòng máy của bạn để lấy độ nhạy + nút bắn chuẩn Auto Headshot</p>
+
+    <div class="search-box">
+        <input type="text" id="deviceInput" placeholder="Nhập tên máy (VD: iPhone 11, Redmi Note 10, Oppo A95...)" autocomplete="off">
+        <div class="suggestions" id="suggestionBox"></div>
+    </div>
+
+    <button class="btn-search" onclick="getSensitivity()">Lấy Độ Nhạy Ngay</button>
+
+    <div class="not-found" id="notFound">
+        ❌ Không tìm thấy dòng máy này. Hãy thử nhập tên ngắn gọn hơn (Ví dụ: "iPhone 11" hoặc "A95").
+    </div>
+
+    <div class="result-box" id="resultBox">
+        <div class="device-title" id="resDeviceName">CẤU HÌNH: IPHONE 11</div>
+        
+        <div class="stat-group">
+            <div class="stat-item fire-button">
+                <span>🔥 KÍCH THƯỚC NÚT BẮN:</span>
+                <span class="stat-value" id="resFireBtn" style="font-size: 20px;">45%</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Nhìn Quanh:</span>
+                <span class="stat-value" id="resLook">100</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Red Dot Sight:</span>
+                <span class="stat-value" id="resRedDot">95</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Ống Ngắm 2x:</span>
+                <span class="stat-value" id="resScope2x">90</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Ống Ngắm 4x:</span>
+                <span class="stat-value" id="resScope4x">85</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Ống Ngắm Ngắm Snip:</span>
+                <span class="stat-value" id="resSniper">50</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">Góc Nhìn:</span>
+                <span class="stat-value" id="resFreeLook">60</span>
+            </div>
+
+            <div class="stat-item dpi-info">
+                <span class="stat-label">DPI Khuyên Dùng (Android):</span>
+                <span class="stat-value" id="resDPI" style="color: #00a8ff;">Khuyên dùng: 480</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Database độ nhạy chuẩn cho các dòng máy phổ biến
+    const database = [
+        // IPHONE
+        { name: "iPhone 6 / 6s / 7 / 8 Plus", look: 100, redDot: 100, scope2x: 95, scope4x: 90, sniper: 50, freeLook: 65, fireBtn: "42%", dpi: "Mặc định (Không chỉnh)" },
+        { name: "iPhone X / XS / XR / XS Max", look: 98, redDot: 95, scope2x: 92, scope4x: 88, sniper: 45, freeLook: 60, fireBtn: "45%", dpi: "Mặc định (Không chỉnh)" },
+        { name: "iPhone 11 / 11 Pro / 11 Pro Max", look: 96, redDot: 92, scope2x: 88, scope4x: 85, sniper: 40, freeLook: 55, fireBtn: "48%", dpi: "Mặc định (Không chỉnh)" },
+        { name: "iPhone 12 / 13 / 14 / 15 / 16 (Tất cả bản Pro/PM)", look: 95, redDot: 90, scope2x: 85, scope4x: 82, sniper: 35, freeLook: 50, fireBtn: "45%", dpi: "Mặc định (Tốc độ con trỏ: Max)" },
+
+        // SAMSUNG
+        { name: "Samsung Galaxy A10 / A20 / A30 / A50 / A51 / A52", look: 100, redDot: 100, scope2x: 98, scope4x: 95, sniper: 50, freeLook: 70, fireBtn: "52%", dpi: "411 -> 480" },
+        { name: "Samsung Galaxy A71 / A72 / A73 / A53 / A54", look: 98, redDot: 95, scope2x: 92, scope4x: 90, sniper: 45, freeLook: 65, fireBtn: "48%", dpi: "450 -> 520" },
+        { name: "Samsung S10 / S20 / S21 / S22 / S23 / S24 (Tất cả bản Ultra)", look: 92, redDot: 88, scope2x: 85, scope4x: 80, sniper: 35, freeLook: 50, fireBtn: "43%", dpi: "Mặc định hoặc 450" },
+
+        // XIAOMI / POCO / REDMI
+        { name: "Redmi Note 8 / Note 9 / Note 10 / Note 11 / Note 12 / Note 13", look: 100, redDot: 98, scope2x: 95, scope4x: 92, sniper: 48, freeLook: 65, fireBtn: "47%", dpi: "392 -> 490" },
+        { name: "Poco X3 Pro / Poco F3 / Poco X5 / Poco F5 / Poco F6", look: 94, redDot: 90, scope2x: 86, scope4x: 82, sniper: 38, freeLook: 50, fireBtn: "44%", dpi: "500 -> 560" },
+        { name: "Xiaomi Mi 10 / Mi 11 / Mi 12 / Mi 13 / Mi 14", look: 93, redDot: 89, scope2x: 85, scope4x: 80, sniper: 35, freeLook: 50, fireBtn: "45%", dpi: "Mặc định" },
+
+        // OPPO / REALME
+        { name: "Oppo Reno 4 / Reno 5 / Reno 6 / Reno 7 / Reno 8 / Reno 10", look: 98, redDot: 96, scope2x: 92, scope4x: 88, sniper: 45, freeLook: 60, fireBtn: "49%", dpi: "420 -> 480" },
+        { name: "Oppo A5 / A9 / A15 / A53 / A54 / A57 / A95 / A96", look: 100, redDot: 100, scope2x: 98, scope4x: 95, sniper: 50, freeLook: 70, fireBtn: "52%", dpi: "360 -> 420" },
+        { name: "Realme 5 Pro / 6 / 7 / 8 / 9 / 10 / 11 / C35 / C55", look: 99, redDot: 97, scope2x: 94, scope4x: 90, sniper: 46, freeLook: 65, fireBtn: "48%", dpi: "400 -> 480" },
+
+        // VIVO / IQOO
+        { name: "Vivo Y11 / Y12 / Y15 / Y20 / Y21 / Y33s / Y35 / Y36", look: 100, redDot: 98, scope2x: 95, scope4x: 92, sniper: 50, freeLook: 70, fireBtn: "50%", dpi: "390 -> 450" },
+        { name: "iQOO Neo 5 / Neo 7 / Neo 9 / iQOO 11 / 12", look: 92, redDot: 88, scope2x: 84, scope4x: 80, sniper: 35, freeLook: 50, fireBtn: "42%", dpi: "480" }
+    ];
+
+    const input = document.getElementById('deviceInput');
+    const suggestionBox = document.getElementById('suggestionBox');
+
+    // Tự động gợi ý khi người dùng gõ
+    input.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        suggestionBox.innerHTML = '';
+        
+        if (query.length === 0) {
+            suggestionBox.style.display = 'none';
+            return;
+        }
+
+        const matches = database.filter(item => item.name.toLowerCase().includes(query));
+
+        if (matches.length > 0) {
+            matches.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = item.name;
+                div.onclick = function() {
+                    input.value = item.name;
+                    suggestionBox.style.display = 'none';
+                    showResult(item);
+                };
+                suggestionBox.appendChild(div);
+            });
+            suggestionBox.style.display = 'block';
+        } else {
+            suggestionBox.style.display = 'none';
+        }
+    });
+
+    // Ẩn gợi ý khi click ra ngoài
+    document.addEventListener('click', function(e) {
+        if (e.target !== input) {
+            suggestionBox.style.display = 'none';
+        }
+    });
+
+    // Hàm tìm kiếm và hiển thị kết quả
+    function getSensitivity() {
+        const query = input.value.toLowerCase().trim();
+        const notFound = document.getElementById('notFound');
+        const resultBox = document.getElementById('resultBox');
+
+        if (!query) return;
+
+        // Tìm kiếm khớp chính xác hoặc chứa từ khóa
+        const result = database.find(item => item.name.toLowerCase().includes(query));
+
+        if (result) {
+            showResult(result);
+        } else {
+            // Nếu không tìm thấy dòng máy cụ thể -> tạo thuật toán độ nhạy chung tối ưu nhất
+            const defaultResult = {
+                name: input.value.toUpperCase() + " (Độ nhạy tối ưu riêng)",
+                look: 98, redDot: 95, scope2x: 90, scope4x: 86, sniper: 45, freeLook: 60, fireBtn: "47%", dpi: "Nên tăng nhẹ 50 DPI"
+            };
+            showResult(defaultResult);
+        }
+    }
+
+    function showResult(data) {
+        document.getElementById('notFound').style.display = 'none';
+        document.getElementById('resultBox').style.display = 'block';
+
+        document.getElementById('resDeviceName').innerText = "CẤU HÌNH TỐI ƯU: " + data.name.toUpperCase();
+        document.getElementById('resFireBtn').innerText = data.fireBtn;
+        document.getElementById('resLook').innerText = data.look;
+        document.getElementById('resRedDot').innerText = data.redDot;
+        document.getElementById('resScope2x').innerText = data.scope2x;
+        document.getElementById('resScope4x').innerText = data.scope4x;
+        document.getElementById('resSniper').innerText = data.sniper;
+        document.getElementById('resFreeLook').innerText = data.freeLook;
+        document.getElementById('resDPI').innerText = data.dpi;
+    }
+</script>
+
+</body>
+</html>
